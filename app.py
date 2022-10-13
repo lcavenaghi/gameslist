@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, Blueprint
 from api import api
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -13,3 +14,6 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 
 routes = Router(api)
 routes.carregar_rotas()
+
+app.logger= logging.getLogger(__name__)
+app.run(debug=True, port=80)
