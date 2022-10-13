@@ -15,5 +15,6 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 routes = Router(api)
 routes.carregar_rotas()
 
-app.logger= logging.getLogger(__name__)
-app.run(debug=True, port=80)
+if __name__ == '__main__':
+    app.logger= logging.getLogger(__name__)
+    app.run(debug=True, port=80)
