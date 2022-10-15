@@ -1,14 +1,15 @@
-from dotenv import dotenv_values
+from dotenv import load_dotenv
+import os
 from pymongo import MongoClient
 from bson import ObjectId
 
-config = dotenv_values(".env")
+load_dotenv()
 
 
 class MongoDb():
     def __init__(self):
-        self.mongodb_client = MongoClient(config["ATLAS_URI"])
-        self.database = self.mongodb_client[config["DB_NAME"]]
+        self.mongodb_client = MongoClient(os.getenv("ATLAS_URI"))
+        self.database = self.mongodb_client[os.getenv("DB_NAME")]
 
     def get_all(self, collection):
         books = list(self.database[collection].find(limit=100))
