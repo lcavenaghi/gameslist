@@ -8,7 +8,14 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-Configure a aplicação através do arquivo .env com as variáveis de ambiente e após isso rode o sistema com o comando:
+Configure a aplicação através do arquivo .env com as variáveis de ambiente necessárias:
+
+```
+ATLAS_URI=mongodb+srv://<usuario>:<senha>@<url>
+DB_NAME=<nomeDoBanco>
+```
+
+Após isso rode o sistema com o comando:
 
 ```
 python app.py

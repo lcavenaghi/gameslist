@@ -1,4 +1,7 @@
-from controller import ControllerAcessos, ControllerDesenvolvedoras, ControllerJogos, ControllerLojas, ControllerNoticias, ControllerPlataformas, ControllerTags, ControllerUsuarios
+from controller import ControllerAcesso, ControllerAcessos, ControllerDesenvolvedora, ControllerDesenvolvedoras, ControllerJogo, ControllerJogos
+from controller import ControllerLoja, ControllerLojas, ControllerNoticia, ControllerNoticias, ControllerPlataforma, ControllerPlataformas
+from controller import ControllerTag, ControllerTags, ControllerUsuario, ControllerUsuarios
+
 
 class Router():
     def __init__(self, api) -> None:
@@ -6,10 +9,19 @@ class Router():
 
     def carregar_rotas(self):
         self.api.add_resource(ControllerAcessos, '/acessos')
+        self.api.add_resource(ControllerAcesso, '/acesso/<string:id>')
         self.api.add_resource(ControllerDesenvolvedoras, '/desenvolvedoras')
+        self.api.add_resource(ControllerDesenvolvedora,
+                              '/desenvolvedora/<string:id>')
         self.api.add_resource(ControllerJogos, '/jogos')
+        self.api.add_resource(ControllerJogo, '/jogo/<string:id>')
         self.api.add_resource(ControllerLojas, '/lojas')
+        self.api.add_resource(ControllerLoja, '/loja/<string:id>')
         self.api.add_resource(ControllerNoticias, '/noticias')
+        self.api.add_resource(ControllerNoticia, '/noticia/<string:id>')
         self.api.add_resource(ControllerPlataformas, '/plataformas')
+        self.api.add_resource(ControllerPlataforma, '/plataforma/<string:id>')
         self.api.add_resource(ControllerTags, '/tags')
+        self.api.add_resource(ControllerTag, '/tag/<string:id>')
         self.api.add_resource(ControllerUsuarios, '/usuarios')
+        self.api.add_resource(ControllerUsuario, '/usuario/<string:id>')
