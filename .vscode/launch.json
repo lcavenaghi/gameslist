@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Arquivo Atual",
+            "name": "Python: app.py",
             "type": "python",
             "request": "launch",
             "program": "app.py",

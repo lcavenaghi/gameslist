@@ -17,9 +17,12 @@ from models.desenvolvedora import desenvolvedora
 from models.desenvolvedora_update import desenvolvedora_update
 from models.acesso import acesso
 from models.acesso_update import acesso_update
+from models.login_model import login_model
 
 from common.mongo_db import MongoDb
+from common.auth import Auth
 mongo_db = MongoDb()
+auth = Auth()
 
 
 class ControllerAcessos(Resource):
@@ -40,7 +43,6 @@ class ControllerAcesso(Resource):
 
     @api.marshal_list_with(acesso)
     def get(self, id):
-        print("oi")
         return mongo_db.get(self.collection, id)
 
     @api.marshal_with(acesso, code=201)
@@ -71,7 +73,6 @@ class ControllerDesenvolvedora(Resource):
 
     @api.marshal_list_with(desenvolvedora)
     def get(self, id):
-        print("oi")
         return mongo_db.get(self.collection, id)
 
     @api.marshal_with(desenvolvedora, code=201)
@@ -102,7 +103,6 @@ class ControllerJogo(Resource):
 
     @api.marshal_list_with(jogo)
     def get(self, id):
-        print("oi")
         return mongo_db.get(self.collection, id)
 
     @api.marshal_with(jogo, code=201)
@@ -133,7 +133,6 @@ class ControllerLoja(Resource):
 
     @api.marshal_list_with(loja)
     def get(self, id):
-        print("oi")
         return mongo_db.get(self.collection, id)
 
     @api.marshal_with(loja, code=201)
@@ -164,7 +163,6 @@ class ControllerNoticia(Resource):
 
     @api.marshal_list_with(noticia)
     def get(self, id):
-        print("oi")
         return mongo_db.get(self.collection, id)
 
     @api.marshal_with(noticia, code=201)
@@ -195,7 +193,6 @@ class ControllerPlataforma(Resource):
 
     @api.marshal_list_with(plataforma)
     def get(self, id):
-        print("oi")
         return mongo_db.get(self.collection, id)
 
     @api.marshal_with(plataforma, code=201)
@@ -226,7 +223,6 @@ class ControllerTag(Resource):
 
     @api.marshal_list_with(tag)
     def get(self, id):
-        print("oi")
         return mongo_db.get(self.collection, id)
 
     @api.marshal_with(tag, code=201)
@@ -257,7 +253,6 @@ class ControllerUsuario(Resource):
 
     @api.marshal_list_with(usuario)
     def get(self, id):
-        print("oi")
         return mongo_db.get(self.collection, id)
 
     @api.marshal_with(usuario, code=201)
@@ -268,3 +263,8 @@ class ControllerUsuario(Resource):
     @api.marshal_with(usuario, code=201)
     def patch(self, id):
         return mongo_db.patch(self.collection, id, api.payload)
+
+class ControllerLogin(Resource):
+    @api.expect(login_model)
+    def post(self):
+        return auth.process_login_request(api.payload["email"], api.payload["senha"])

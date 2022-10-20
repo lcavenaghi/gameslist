@@ -45,3 +45,13 @@ class MongoDb():
             return self.database[collection].find_one({"_id": ObjectId(id)}), 201
         else:
             return {}, 404
+
+    def db_find(self, collection, multiple, query):
+        if (multiple):
+            data = self.database[collection].find(query)
+        else:
+            data = self.database[collection].find_one(query)
+        if (data) is not None:
+            return data, 200
+        else:
+            return {}, 404
