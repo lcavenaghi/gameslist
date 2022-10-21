@@ -13,6 +13,7 @@ Configure a aplicação através do arquivo .env com as variáveis de ambiente n
 ```
 ATLAS_URI=mongodb+srv://<usuario>:<senha>@<url>
 DB_NAME=<nomeDoBanco>
+JWT_KEY=<chaveDeAssinaturaJWT>
 ```
 
 Após isso rode o sistema com o comando:
