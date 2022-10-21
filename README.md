@@ -1,4 +1,4 @@
-# gameslist
+# gameslist entrega B
 Projeto criado durante a pós graduação em Desenvolvimento Web Full Stack. Esse repositório possui o backend utilizando o framework flask rest x.
 
 Para a execução correta do sistema, instale as dependencias necessárias com os comandos:
