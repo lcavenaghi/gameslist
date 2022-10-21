@@ -7,3 +7,4 @@ python-dotenv==0.21.0
 autopep8==1.7.0
 PyJWT==2.6.0
 bcrypt==4.0.1
+Flask-Cors==3.0.10

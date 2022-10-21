@@ -2,10 +2,12 @@ import logging
 from flask import Flask, Blueprint
 from api import api
 from werkzeug.middleware.proxy_fix import ProxyFix
+from flask_cors import CORS
 
 from routes import Router
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 blueprint = Blueprint('api', __name__)
 
 api.init_app(blueprint)
