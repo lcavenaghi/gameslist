@@ -1,5 +1,7 @@
 from flask_restx import Resource
 from api import api
+from common.jwt import requer_jwt
+from flask_jwt_extended import get_jwt_identity
 
 from models.usuario import usuario
 from models.usuario_update import usuario_update
@@ -16,7 +18,6 @@ from models.jogo_update import jogo_update
 from models.desenvolvedora import desenvolvedora
 from models.desenvolvedora_update import desenvolvedora_update
 from models.acesso import acesso
-from models.acesso_update import acesso_update
 from models.login_model import login_model
 
 from common.mongo_db import MongoDb
@@ -28,40 +29,21 @@ auth = Auth()
 class ControllerAcessos(Resource):
     collection = "acessos"
 
+    @requer_jwt()
     @api.marshal_list_with(acesso)
     def get(self):
-        return mongo_db.get_all(self.collection)
-
-    @api.expect(acesso)
-    @api.marshal_with(acesso, code=201)
-    def post(self):
-        return mongo_db.insert(self.collection, api.payload)
-
-
-class ControllerAcesso(Resource):
-    collection = "acessos"
-
-    @api.marshal_list_with(acesso)
-    def get(self, id):
-        return mongo_db.get(self.collection, id)
-
-    @api.marshal_with(acesso, code=201)
-    def delete(self, id):
-        return mongo_db.delete(self.collection, id)
-
-    @api.expect(acesso_update)
-    @api.marshal_with(acesso, code=201)
-    def patch(self, id):
-        return mongo_db.patch(self.collection, id, api.payload)
+        return mongo_db.db_find(self.collection, True, {"email": get_jwt_identity()})
 
 
 class ControllerDesenvolvedoras(Resource):
     collection = "desenvolvedoras"
 
+    @requer_jwt()
     @api.marshal_list_with(desenvolvedora)
     def get(self):
         return mongo_db.get_all(self.collection)
 
+    @requer_jwt()
     @api.expect(desenvolvedora)
     @api.marshal_with(desenvolvedora, code=201)
     def post(self):
@@ -71,14 +53,17 @@ class ControllerDesenvolvedoras(Resource):
 class ControllerDesenvolvedora(Resource):
     collection = "desenvolvedoras"
 
+    @requer_jwt()
     @api.marshal_list_with(desenvolvedora)
     def get(self, id):
         return mongo_db.get(self.collection, id)
 
+    @requer_jwt()
     @api.marshal_with(desenvolvedora, code=201)
     def delete(self, id):
         return mongo_db.delete(self.collection, id)
 
+    @requer_jwt()
     @api.expect(desenvolvedora_update)
     @api.marshal_with(desenvolvedora, code=201)
     def patch(self, id):
@@ -88,10 +73,12 @@ class ControllerDesenvolvedora(Resource):
 class ControllerJogos(Resource):
     collection = "jogos"
 
+    @requer_jwt()
     @api.marshal_list_with(jogo)
     def get(self):
         return mongo_db.get_all(self.collection)
 
+    @requer_jwt()
     @api.expect(jogo)
     @api.marshal_with(jogo, code=201)
     def post(self):
@@ -101,14 +88,17 @@ class ControllerJogos(Resource):
 class ControllerJogo(Resource):
     collection = "jogos"
 
+    @requer_jwt()
     @api.marshal_list_with(jogo)
     def get(self, id):
         return mongo_db.get(self.collection, id)
 
+    @requer_jwt()
     @api.marshal_with(jogo, code=201)
     def delete(self, id):
         return mongo_db.delete(self.collection, id)
 
+    @requer_jwt()
     @api.expect(jogo_update)
     @api.marshal_with(jogo, code=201)
     def patch(self, id):
@@ -118,10 +108,12 @@ class ControllerJogo(Resource):
 class ControllerLojas(Resource):
     collection = "lojas"
 
+    @requer_jwt()
     @api.marshal_list_with(loja)
     def get(self):
         return mongo_db.get_all(self.collection)
 
+    @requer_jwt()
     @api.expect(loja)
     @api.marshal_with(loja, code=201)
     def post(self):
@@ -131,14 +123,17 @@ class ControllerLojas(Resource):
 class ControllerLoja(Resource):
     collection = "lojas"
 
+    @requer_jwt()
     @api.marshal_list_with(loja)
     def get(self, id):
         return mongo_db.get(self.collection, id)
 
+    @requer_jwt()
     @api.marshal_with(loja, code=201)
     def delete(self, id):
         return mongo_db.delete(self.collection, id)
 
+    @requer_jwt()
     @api.expect(loja_update)
     @api.marshal_with(loja, code=201)
     def patch(self, id):
@@ -148,10 +143,12 @@ class ControllerLoja(Resource):
 class ControllerNoticias(Resource):
     collection = "noticias"
 
+    @requer_jwt()
     @api.marshal_list_with(noticia)
     def get(self):
         return mongo_db.get_all(self.collection)
 
+    @requer_jwt(["gestor"])
     @api.expect(noticia)
     @api.marshal_with(noticia, code=201)
     def post(self):
@@ -161,14 +158,17 @@ class ControllerNoticias(Resource):
 class ControllerNoticia(Resource):
     collection = "noticias"
 
+    @requer_jwt()
     @api.marshal_list_with(noticia)
     def get(self, id):
         return mongo_db.get(self.collection, id)
 
+    @requer_jwt(["gestor"])
     @api.marshal_with(noticia, code=201)
     def delete(self, id):
         return mongo_db.delete(self.collection, id)
 
+    @requer_jwt(["gestor"])
     @api.expect(noticia_update)
     @api.marshal_with(noticia, code=201)
     def patch(self, id):
@@ -178,10 +178,12 @@ class ControllerNoticia(Resource):
 class ControllerPlataformas(Resource):
     collection = "plataformas"
 
+    @requer_jwt()
     @api.marshal_list_with(plataforma)
     def get(self):
         return mongo_db.get_all(self.collection)
 
+    @requer_jwt(["gestor"])
     @api.expect(plataforma)
     @api.marshal_with(plataforma, code=201)
     def post(self):
@@ -191,14 +193,17 @@ class ControllerPlataformas(Resource):
 class ControllerPlataforma(Resource):
     collection = "plataformas"
 
+    @requer_jwt()
     @api.marshal_list_with(plataforma)
     def get(self, id):
         return mongo_db.get(self.collection, id)
 
+    @requer_jwt(["gestor"])
     @api.marshal_with(plataforma, code=201)
     def delete(self, id):
         return mongo_db.delete(self.collection, id)
 
+    @requer_jwt(["gestor"])
     @api.expect(plataforma_update)
     @api.marshal_with(plataforma, code=201)
     def patch(self, id):
@@ -208,10 +213,12 @@ class ControllerPlataforma(Resource):
 class ControllerTags(Resource):
     collection = "tags"
 
+    @requer_jwt()
     @api.marshal_list_with(tag)
     def get(self):
         return mongo_db.get_all(self.collection)
 
+    @requer_jwt(["gestor"])
     @api.expect(tag)
     @api.marshal_with(tag, code=201)
     def post(self):
@@ -221,14 +228,17 @@ class ControllerTags(Resource):
 class ControllerTag(Resource):
     collection = "tags"
 
+    @requer_jwt()
     @api.marshal_list_with(tag)
     def get(self, id):
         return mongo_db.get(self.collection, id)
 
+    @requer_jwt(["gestor"])
     @api.marshal_with(tag, code=201)
     def delete(self, id):
         return mongo_db.delete(self.collection, id)
 
+    @requer_jwt(["gestor"])
     @api.expect(tag_update)
     @api.marshal_with(tag, code=201)
     def patch(self, id):
@@ -238,6 +248,7 @@ class ControllerTag(Resource):
 class ControllerUsuarios(Resource):
     collection = "usuarios"
 
+    @requer_jwt(["admin"])
     @api.marshal_list_with(usuario)
     def get(self):
         return mongo_db.get_all(self.collection)
@@ -245,26 +256,30 @@ class ControllerUsuarios(Resource):
     @api.expect(usuario)
     @api.marshal_with(usuario, code=201)
     def post(self):
-        return mongo_db.insert(self.collection, api.payload)
+        return auth.registra(api.payload)
 
 
 class ControllerUsuario(Resource):
     collection = "usuarios"
 
+    @requer_jwt(["admin"])
     @api.marshal_list_with(usuario)
     def get(self, id):
         return mongo_db.get(self.collection, id)
 
+    @requer_jwt(["admin"])
     @api.marshal_with(usuario, code=201)
     def delete(self, id):
         return mongo_db.delete(self.collection, id)
 
+    @requer_jwt(["admin"])
     @api.expect(usuario_update)
     @api.marshal_with(usuario, code=201)
     def patch(self, id):
         return mongo_db.patch(self.collection, id, api.payload)
 
+
 class ControllerLogin(Resource):
     @api.expect(login_model)
     def post(self):
-        return auth.process_login_request(api.payload["email"], api.payload["senha"])
+        return auth.processa_login(api.payload["email"], api.payload["senha"])

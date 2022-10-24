@@ -10,9 +10,11 @@ load_dotenv()
 
 
 class Auth():
-    def process_login_request(self, email, senha):
-        mongo_db = MongoDb()
-        user = mongo_db.db_find("usuarios", False, {"email": email})[0]
+    def __init__(self):
+        self.mongo_db = MongoDb()
+
+    def processa_login(self, email, senha):
+        user = self.mongo_db.db_find("usuarios", False, {"email": email})[0]
         if not user or "senha" not in user:
             return {"errorMessage": "Usuario nao encontrado."}, 401
 
@@ -21,6 +23,8 @@ class Auth():
 
         access_token = self.encode_jwt(
             user["email"], user["tipoDeAcesso"])
+
+        self.mongo_db.insert("acessos", {"usuario":user["email", "horario": datetime.utcnow()]})
 
         return {"token": access_token}, 200
 
@@ -31,15 +35,19 @@ class Auth():
                        tipoDeAcesso=tipo_de_acesso)
         key = os.getenv("JWT_KEY")
         return jwt.encode(payload, key, algorithm="HS256")
+    
+    def registra(self, usuario):
+        user = self.mongo_db.db_find("usuarios", False, {"email": usuario["email"]})[0]
+        if user:
+            return {"errorMessage": "Usuario já cadastrado."}, 401
+            
+        usuario['senha'] = self.hash_senha(usuario['senha'])
+        self.mongo_db.insert("usuarios", usuario)
 
-    def verifica_jwt(self, jwt_string):
-        try:
-            key = os.getenv("JWT_KEY")
-            jwt.decode(jwt_string, key, algorithms='HS256')
-            return True
-        except Exception as e:
-            print("Erro: " + str(e))
-            return False
+        access_token = self.encode_jwt(
+            user["email"], user["tipoDeAcesso"])
+
+        return {"token": access_token}, 200
 
     def hash_senha(self, senha_string):
         senha_string = senha_string.encode('utf-8')
