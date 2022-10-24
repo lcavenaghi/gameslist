@@ -24,27 +24,28 @@ class Auth():
         access_token = self.encode_jwt(
             user["email"], user["tipoDeAcesso"])
 
-        self.mongo_db.insert("acessos", {"usuario":user["email", "horario": datetime.utcnow()]})
+        self.mongo_db.insert( "acessos", {"usuario": user["email"], "horario": datetime.utcnow()})
 
         return {"token": access_token}, 200
 
     def encode_jwt(self, usuario, tipo_de_acesso):
-        now = datetime.now(timezone.utc)
-        expire = now + timedelta(hours=8)
-        payload = dict(exp=expire, iat=now, sub=usuario,
-                       tipoDeAcesso=tipo_de_acesso)
-        key = os.getenv("JWT_KEY")
-        return jwt.encode(payload, key, algorithm="HS256")
-    
+        now= datetime.now(timezone.utc)
+        expire= now + timedelta(hours=8)
+        payload= dict(exp=expire, iat=now, sub=usuario,
+                       tipoDeAcesso = tipo_de_acesso)
+        key=os.getenv("JWT_KEY")
+        return jwt.encode(payload, key, algorithm = "HS256")
+
     def registra(self, usuario):
-        user = self.mongo_db.db_find("usuarios", False, {"email": usuario["email"]})[0]
+        user=self.mongo_db.db_find(
+            "usuarios", False, {"email": usuario["email"]})[0]
         if user:
             return {"errorMessage": "Usuario já cadastrado."}, 401
-            
-        usuario['senha'] = self.hash_senha(usuario['senha'])
+
+        usuario['senha']=self.hash_senha(usuario['senha'])
         self.mongo_db.insert("usuarios", usuario)
 
-        access_token = self.encode_jwt(
+        access_token=self.encode_jwt(
             user["email"], user["tipoDeAcesso"])
 
         return {"token": access_token}, 200
