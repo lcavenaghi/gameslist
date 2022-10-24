@@ -37,16 +37,16 @@ class Auth():
         return jwt.encode(payload, key, algorithm = "HS256")
 
     def registra(self, usuario):
-        user=self.mongo_db.db_find(
+        user_db=self.mongo_db.db_find(
             "usuarios", False, {"email": usuario["email"]})[0]
-        if user:
-            return {"errorMessage": "Usuario já cadastrado."}, 401
+        if user_db:
+            return {"errorMessage": "Usuario já cadastrado."}, 303
 
         usuario['senha']=self.hash_senha(usuario['senha'])
         self.mongo_db.insert("usuarios", usuario)
 
         access_token=self.encode_jwt(
-            user["email"], user["tipoDeAcesso"])
+            usuario["email"], usuario["tipoDeAcesso"])
 
         return {"token": access_token}, 200
 
