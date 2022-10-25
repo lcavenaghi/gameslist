@@ -293,6 +293,5 @@ class ControllerEsqueciSenha(Resource):
         return auth.envia_email_esqueci_senha(api.payload["email"])
     
     @api.expect(token_senha)
-    @api.marshal_list_with(usuario)
     def patch(self):
         return auth.altera_senha(api.payload["token"], api.payload["senha"])

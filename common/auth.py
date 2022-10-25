@@ -31,13 +31,19 @@ class Auth():
 
     def altera_senha(self, jwt_para_reset, nova_senha):
         try:
-            payload = jwt.decode(jwt_para_reset, os.getenv("JWT_KEY"), algorithms=["HS256"])
+            payload = jwt.decode(jwt_para_reset, os.getenv(
+                "JWT_KEY"), algorithms=["HS256"])
             user = self.mongo_db.db_find(
                 "usuarios", False, {"email": payload["reset_user"]})[0]
             user["senha"] = self.hash_senha(nova_senha)
-            return self.mongo_db.patch("usuarios", user["_id"], user)
+            novo_user = self.mongo_db.patch("usuarios", user["_id"], user)
+            if(novo_user[1] == 200):
+                novo_user[0]['_id'] = str(novo_user[0]['_id'])
+                return novo_user
+            else:
+                return {"errorMessage": "Ocorreu um erro ao atualizar a senha do usuário"}, 401
         except Exception as e:
-            return {"errorMessage": "Token de senha inválido ou expirado", "error": str(e)}, 401
+            return {"errorMessage": "Token de senha inválido ou expirado"}, 401
 
     def envia_email_esqueci_senha(self, email):
         user = self.mongo_db.db_find(
