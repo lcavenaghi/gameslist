@@ -39,10 +39,15 @@ class MongoDb():
     def patch(self, collection, id, new_data):
         data = self.database[collection].find_one({"_id": ObjectId(id)})
 
+        if ("_id" in new_data):
+            del new_data["_id"]
+        if (type(id) == ObjectId):
+            id = str(id)
+
         if (data is not None):
             self.database[collection].update_one(
                 {"_id": ObjectId(id)}, {"$set": new_data})
-            return self.database[collection].find_one({"_id": ObjectId(id)}), 201
+            return self.database[collection].find_one({"_id": ObjectId(id)}), 200
         else:
             return {}, 404
 

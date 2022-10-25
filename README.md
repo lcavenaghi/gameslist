@@ -14,6 +14,10 @@ Configure a aplicação através do arquivo .env com as variáveis de ambiente n
 ATLAS_URI=mongodb+srv://<usuario>:<senha>@<url>
 DB_NAME=<nomeDoBanco>
 JWT_KEY=<chaveDeAssinaturaJWT>
+FRONT_URL=<linkDoFrontEnd>
+SMTP_SERVER=<SMTP_SERVER>
+SMTP_USER_EMAIL=<usuarioDoEmail>
+SMTP_USER_PASSWORD=<senhaDoEmail>
 ```
 
 Após isso rode o sistema com o comando:

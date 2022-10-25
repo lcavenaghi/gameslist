@@ -1,4 +1,4 @@
-from controller import ControllerAcessos, ControllerDesenvolvedora, ControllerDesenvolvedoras, ControllerJogo, ControllerJogos, ControllerLogin
+from controller import ControllerAcessos, ControllerDesenvolvedora, ControllerDesenvolvedoras, ControllerEsqueciSenha, ControllerJogo, ControllerJogos, ControllerLogin
 from controller import ControllerLoja, ControllerLojas, ControllerNoticia, ControllerNoticias, ControllerPlataforma, ControllerPlataformas
 from controller import ControllerTag, ControllerTags, ControllerUsuario, ControllerUsuarios
 
@@ -25,3 +25,4 @@ class Router():
         self.api.add_resource(ControllerTags, '/tags')
         self.api.add_resource(ControllerTag, '/tag/<string:id>')
         self.api.add_resource(ControllerUsuarios, '/usuarios')
+        self.api.add_resource(ControllerEsqueciSenha, '/senha')
