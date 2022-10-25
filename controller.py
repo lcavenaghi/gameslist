@@ -19,6 +19,8 @@ from models.desenvolvedora import desenvolvedora
 from models.desenvolvedora_update import desenvolvedora_update
 from models.acesso import acesso
 from models.login_model import login_model
+from models.esqueci_senha import esqueci_senha
+from models.token_senha import token_senha
 
 from common.mongo_db import MongoDb
 from common.auth import Auth
@@ -283,3 +285,14 @@ class ControllerLogin(Resource):
     @api.expect(login_model)
     def post(self):
         return auth.processa_login(api.payload["email"], api.payload["senha"])
+
+
+class ControllerEsqueciSenha(Resource):
+    @api.expect(esqueci_senha)
+    def post(self):
+        return auth.envia_email_esqueci_senha(api.payload["email"])
+    
+    @api.expect(token_senha)
+    @api.marshal_list_with(usuario)
+    def patch(self):
+        return auth.altera_senha(api.payload["token"], api.payload["senha"])
