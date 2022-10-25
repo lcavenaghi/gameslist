@@ -57,7 +57,7 @@ class Auth():
             payload = dict(exp=expire, iat=now, sub="reset_user",
                            reset_user=user["email"])
             jwt_reset = jwt.encode(payload, key, algorithm="HS256")
-            url = os.getenv("FRONT_URL") + "resetsenha&token=" + jwt_reset
+            url = os.getenv("FRONT_URL") + "resetsenha?token=" + jwt_reset
             mensagem = get_message("Registre sua nova senha", email,
                                    f"<p>Por favor registre sua nova senha, acesse o <a href={url}> Link</a> para acessar a Games List, ou cole o link em seu navegador:</p><p>{url}</p>")
             if (send_mail(mensagem)):
