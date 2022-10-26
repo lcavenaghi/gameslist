@@ -18,6 +18,7 @@ FRONT_URL=<linkDoFrontEnd>
 SMTP_SERVER=<SMTP_SERVER>
 SMTP_USER_EMAIL=<usuarioDoEmail>
 SMTP_USER_PASSWORD=<senhaDoEmail>
+GOOGLE_CLIENT_ID=<clientIdDoGoogle>
 ```
 
 Após isso rode o sistema com o comando:

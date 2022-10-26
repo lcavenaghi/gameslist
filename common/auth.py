@@ -5,6 +5,8 @@ from common.mongo_db import MongoDb
 import os
 import jwt
 import bcrypt
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 load_dotenv()
 
@@ -29,6 +31,23 @@ class Auth():
 
         return {"token": access_token}, 200
 
+    def processa_login_google(self, token):
+        try:
+            idinfo = id_token.verify_oauth2_token(
+                token, requests.Request(), os.getenv("GOOGLE_CLIENT_ID"))            
+
+            user = self.mongo_db.db_find(
+                "usuarios", False, {"email": idinfo["email"]})[0]
+            access_token = self.encode_jwt(
+                user["email"], user["tipoDeAcesso"])
+            self.mongo_db.insert(
+                "acessos", {"usuario": user["email"], "horario": datetime.utcnow()})
+
+            return {"token": access_token}, 200
+        except Exception as e:
+            print(e)
+            return {"errorMessage": "Token de senha inválido ou expirado"}, 401
+
     def altera_senha(self, jwt_para_reset, nova_senha):
         try:
             payload = jwt.decode(jwt_para_reset, os.getenv(
@@ -37,7 +56,7 @@ class Auth():
                 "usuarios", False, {"email": payload["reset_user"]})[0]
             user["senha"] = self.hash_senha(nova_senha)
             novo_user = self.mongo_db.patch("usuarios", user["_id"], user)
-            if(novo_user[1] == 200):
+            if (novo_user[1] == 200):
                 novo_user[0]['_id'] = str(novo_user[0]['_id'])
                 return novo_user
             else:

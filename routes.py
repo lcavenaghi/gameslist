@@ -1,4 +1,4 @@
-from controller import ControllerAcessos, ControllerDesenvolvedora, ControllerDesenvolvedoras, ControllerEsqueciSenha, ControllerJogo, ControllerJogos, ControllerLogin
+from controller import ControllerAcessos, ControllerDesenvolvedora, ControllerDesenvolvedoras, ControllerEsqueciSenha, ControllerJogo, ControllerJogos, ControllerLogin, ControllerLoginGoogle
 from controller import ControllerLoja, ControllerLojas, ControllerNoticia, ControllerNoticias, ControllerPlataforma, ControllerPlataformas
 from controller import ControllerTag, ControllerTags, ControllerUsuario, ControllerUsuarios
 
@@ -10,7 +10,8 @@ class Router():
     def carregar_rotas(self):
         self.api.add_resource(ControllerAcessos, '/acessos')
         self.api.add_resource(ControllerUsuario, '/usuario/<string:id>')
-        self.api.add_resource(ControllerLogin, '/login')        
+        self.api.add_resource(ControllerLogin, '/login')
+        self.api.add_resource(ControllerLoginGoogle, '/logingoogle')
         self.api.add_resource(ControllerDesenvolvedoras, '/desenvolvedoras')
         self.api.add_resource(ControllerDesenvolvedora,
                               '/desenvolvedora/<string:id>')
