@@ -53,7 +53,7 @@ class MongoDb():
 
     def db_find(self, collection, multiple, query):
         if (multiple):
-            data = self.database[collection].find(query)
+            data = list(self.database[collection].find(query))
         else:
             data = self.database[collection].find_one(query)
         if (data) is not None:

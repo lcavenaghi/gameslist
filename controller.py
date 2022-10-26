@@ -35,7 +35,7 @@ class ControllerAcessos(Resource):
     @requer_jwt()
     @api.marshal_list_with(acesso)
     def get(self):
-        return mongo_db.db_find(self.collection, True, {"email": get_jwt_identity()})
+        return mongo_db.db_find(self.collection, True, {"usuario": get_jwt_identity()})
 
 
 class ControllerDesenvolvedoras(Resource):
