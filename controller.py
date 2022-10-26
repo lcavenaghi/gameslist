@@ -301,4 +301,5 @@ class ControllerEsqueciSenha(Resource):
 
     @api.expect(token_senha)
     def patch(self):
+        print(api.payload)
         return auth.altera_senha(api.payload["token"], api.payload["senha"])
