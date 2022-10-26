@@ -35,6 +35,7 @@ class Auth():
         try:
             idinfo = id_token.verify_oauth2_token(
                 token, requests.Request(), os.getenv("GOOGLE_CLIENT_ID"))
+            print(idinfo)
 
             user = self.mongo_db.db_find(
                 "usuarios", False, {"email": idinfo["email"]})[0]
