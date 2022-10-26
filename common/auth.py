@@ -41,7 +41,10 @@ class Auth():
                 "usuarios", False, {"email": idinfo["email"]})[0]
 
             if not user:
-                sobrenome = idinfo["family_name"] or "nenhum"
+                if "family_name" in idinfo:
+                    sobrenome = idinfo["family_name"]
+                else:
+                    sobrenome = "nenhum"
                 novo_usuario = {"email": idinfo["email"], "senha": "gerado_pelo_google",
                                 "nome": idinfo["given_name"], "sobrenome": sobrenome}
                 return self.registra(novo_usuario)
