@@ -151,7 +151,7 @@ class ControllerNoticias(Resource):
     def get(self):
         return mongo_db.get_all(self.collection)
 
-    @requer_jwt(["gestor"])
+    @requer_jwt(["gestor", "admin"])
     @api.expect(noticia)
     @api.marshal_with(noticia, code=201)
     def post(self):
@@ -166,12 +166,12 @@ class ControllerNoticia(Resource):
     def get(self, id):
         return mongo_db.get(self.collection, id)
 
-    @requer_jwt(["gestor"])
+    @requer_jwt(["gestor", "admin"])
     @api.marshal_with(noticia, code=201)
     def delete(self, id):
         return mongo_db.delete(self.collection, id)
 
-    @requer_jwt(["gestor"])
+    @requer_jwt(["gestor", "admin"])
     @api.expect(noticia_update)
     @api.marshal_with(noticia, code=201)
     def patch(self, id):
@@ -186,7 +186,7 @@ class ControllerPlataformas(Resource):
     def get(self):
         return mongo_db.get_all(self.collection)
 
-    @requer_jwt(["gestor"])
+    @requer_jwt(["gestor", "admin"])
     @api.expect(plataforma)
     @api.marshal_with(plataforma, code=201)
     def post(self):
@@ -201,12 +201,12 @@ class ControllerPlataforma(Resource):
     def get(self, id):
         return mongo_db.get(self.collection, id)
 
-    @requer_jwt(["gestor"])
+    @requer_jwt(["gestor", "admin"])
     @api.marshal_with(plataforma, code=201)
     def delete(self, id):
         return mongo_db.delete(self.collection, id)
 
-    @requer_jwt(["gestor"])
+    @requer_jwt(["gestor", "admin"])
     @api.expect(plataforma_update)
     @api.marshal_with(plataforma, code=201)
     def patch(self, id):
@@ -221,7 +221,7 @@ class ControllerTags(Resource):
     def get(self):
         return mongo_db.get_all(self.collection)
 
-    @requer_jwt(["gestor"])
+    @requer_jwt(["gestor", "admin"])
     @api.expect(tag)
     @api.marshal_with(tag, code=201)
     def post(self):
@@ -236,12 +236,12 @@ class ControllerTag(Resource):
     def get(self, id):
         return mongo_db.get(self.collection, id)
 
-    @requer_jwt(["gestor"])
+    @requer_jwt(["gestor", "admin"])
     @api.marshal_with(tag, code=201)
     def delete(self, id):
         return mongo_db.delete(self.collection, id)
 
-    @requer_jwt(["gestor"])
+    @requer_jwt(["gestor", "admin"])
     @api.expect(tag_update)
     @api.marshal_with(tag, code=201)
     def patch(self, id):
