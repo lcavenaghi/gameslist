@@ -257,7 +257,6 @@ class ControllerUsuarios(Resource):
         return mongo_db.get_all(self.collection)
 
     @api.expect(usuario)
-    @api.marshal_with(usuario, code=201)
     def post(self):
         return auth.registra(api.payload)
 
