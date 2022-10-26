@@ -34,10 +34,16 @@ class Auth():
     def processa_login_google(self, token):
         try:
             idinfo = id_token.verify_oauth2_token(
-                token, requests.Request(), os.getenv("GOOGLE_CLIENT_ID"))            
+                token, requests.Request(), os.getenv("GOOGLE_CLIENT_ID"))
 
             user = self.mongo_db.db_find(
                 "usuarios", False, {"email": idinfo["email"]})[0]
+
+            if not user:
+                novo_usuario = {"email": idinfo["email"], "senha": "gerado_pelo_google",
+                                "nome": idinfo["given_name"], "sobrenome": idinfo["family_name"]}
+                return self.registra(novo_usuario)
+
             access_token = self.encode_jwt(
                 user["email"], user["tipoDeAcesso"])
             self.mongo_db.insert(
@@ -98,6 +104,7 @@ class Auth():
         if user_db:
             return {"errorMessage": "Usuario já cadastrado."}, 303
 
+        usuario['tipoDeAcesso'] = "usuario"
         usuario['senha'] = self.hash_senha(usuario['senha'])
         self.mongo_db.insert("usuarios", usuario)
 
