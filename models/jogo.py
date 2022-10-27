@@ -10,5 +10,6 @@ jogo = api.model('jogo', {
     'plataforma': fields.String(required=True, description='Id da Plataforma do jogo'),
     'desenvolvedora': fields.String(required=True, description='Id da desenvolvedora do jogo'),
     'loja': fields.String(required=True, description='Id da loja do jogo'),
-    'tags': fields.List(fields.String(required=True, description='Ids de tags do jogo'))
+    'tags': fields.List(fields.String(required=True, description='Ids de tags do jogo')),
+    'favoritos': fields.List(fields.String(required=False, description='Ids de usuarios que favoritaram o jogo'))
 }, strict=True)
