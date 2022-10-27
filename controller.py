@@ -1,3 +1,4 @@
+import copy
 from flask_restx import Resource
 from api import api
 from common.jwt import requer_jwt
@@ -85,7 +86,12 @@ class ControllerJogos(Resource):
     @api.expect(jogo)
     @api.marshal_with(jogo, code=201)
     def post(self):
-        return mongo_db.insert(self.collection, api.payload)
+        if (not "favoritos" in api.payload):
+            novo_jogo = copy.deepcopy(api.payload)
+            novo_jogo["favoritos"] = []
+            return mongo_db.insert(self.collection, novo_jogo)
+        else:
+            return mongo_db.insert(self.collection, api.payload)
 
 
 class ControllerJogo(Resource):
